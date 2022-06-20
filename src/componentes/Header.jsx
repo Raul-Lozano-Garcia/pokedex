@@ -6,7 +6,7 @@ import Tipos from './Tipos';
 
 const { useContext } = React;
 
-function Header({ pokemons, onSearch, fetchPokemonsPorTipo, fetchPokemonsFav }) {
+function Header({ ...props }) {
 
     const {pokemonFavoritos} = useContext(FavoritosContext);
 
@@ -19,8 +19,8 @@ function Header({ pokemons, onSearch, fetchPokemonsPorTipo, fetchPokemonsFav }) 
             <div className='header-favoritos'>
             ❤️️ {pokemonFavoritos.length}
             </div>
-            <Searchbar onSearch={onSearch} pokemons={pokemons}/>
-            <Tipos fetchPokemonsPorTipo={fetchPokemonsPorTipo} fetchPokemonsFav={fetchPokemonsFav} />
+            <Searchbar {...props}/>
+            <Tipos {...props} />
         </header>
     )
 }

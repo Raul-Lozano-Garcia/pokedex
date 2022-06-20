@@ -3,9 +3,12 @@ import '../hojas-de-estilo/Header.css';
 import FavoritosContext from '../contexts/favoritosContext';
 import TraducirContext from '../contexts/traducirContext';
 import { getTipos } from "../api";
+import {useNavigate} from "react-router-dom"
+import {allTypes} from '../contexts/globalVar';
 
-function Tipos({ fetchPokemonsPorTipo, fetchPokemonsFav }) {
+function Tipos({ setTipo, fetchPokemonsFav }) {
 
+    let navigate = useNavigate();
     const { pokemonFavoritos } = useContext(FavoritosContext);
     const { nombreTraducido } = useContext(TraducirContext);
 
@@ -37,7 +40,7 @@ function Tipos({ fetchPokemonsPorTipo, fetchPokemonsFav }) {
         <div className='tipos-container'>
             {tipos.map((tipo) => {
                 return(
-                    <button className={tipo} key={tipo} onClick={() => fetchPokemonsPorTipo(tipo)}>{nombreTraducido(tipo)}</button>
+                    <button className={tipo} key={tipo} onClick={() => {setTipo(tipo); navigate(`/${tipo}`)}}>{allTypes[tipo]}</button>
                 )
             })}
             {pokemonFavoritos.length>0 &&

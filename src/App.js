@@ -6,20 +6,28 @@ import { getPokemonData, getPokemons, searchPokemon, searchPokemonPorTipo } from
 import { FavoritosProvider } from './contexts/favoritosContext';
 import { ShinysProvider } from './contexts/shinysContext';
 import { TraducirProvider } from './contexts/traducirContext';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 function App() {
+
+  const location = useLocation();
 
   const localStorageKeyFav = 'pokemon_favorito';
   const localStorageKeyShiny = 'pokemon_shiny';
 
   const [pokemons,setPokemons] = useState([]);
   const [page,setPage] = useState(0);
+  const [tipo, setTipo] = useState(location.pathname ? location.pathname.substring(1,location.pathname.length) : "");
   const [total,setTotal] = useState(0);
   const [loading,setLoading] = useState(true);
   const [favoritos,setFavoritos] = useState([]);
   const [shinys,setShinys] = useState([]);
   const [sinResultados,setSinResultados] = useState(false);
   const [buscando,setBuscando] = useState(false);
+
+  useEffect(() => {
+    fetchPokemonsPorTipo(tipo)
+  }, [tipo]);
 
   const fetchPokemons = async () =>{
     try {
@@ -57,7 +65,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if(!buscando){
+    if(!buscando && !tipo){
       fetchPokemons();
     } 
     }, [page]);
@@ -225,7 +233,7 @@ function App() {
       nombreTraducido: nombreTraducido
     }}>
     <div className="App">
-        <Header pokemons={pokemons} onSearch={onSearch} fetchPokemonsPorTipo={fetchPokemonsPorTipo} fetchPokemonsFav={fetchPokemonsFav}/>
+        <Header pokemons={pokemons} onSearch={onSearch} setTipo={setTipo} fetchPokemonsFav={fetchPokemonsFav}/>
         <main id="main" className="container">
           {sinResultados ?
           <h2 className='sin-resultados'>Lo sentimos. El Pokémon introducido no existe. Si desea verlos todos borre su búsqueda</h2>
